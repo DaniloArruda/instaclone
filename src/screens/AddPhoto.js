@@ -12,6 +12,7 @@ import {
   Dimensions
 } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
+import commonStyles from '../commonStyles';
 
 class AddPhoto extends Component {
   constructor(props) {
@@ -48,15 +49,15 @@ class AddPhoto extends Component {
             <Image source={this.state.image} style={styles.image} />
           </View>
 
-          <TouchableOpacity onPress={this.pickImage} style={styles.button}>
-            <Text style={styles.buttonText}>Escolha a foto</Text>
+          <TouchableOpacity onPress={this.pickImage} style={commonStyles.button}>
+            <Text style={commonStyles.buttonText}>Escolha a foto</Text>
           </TouchableOpacity>
           <TextInput placeholder='Algum comentário para a foto?'
             style={styles.input} value={this.state.comment}
             onChangeText={comment => this.setState({ comment })} />
 
-          <TouchableOpacity onPress={this.save} style={styles.button}>
-            <Text style={styles.buttonText}>Salvar</Text>
+          <TouchableOpacity onPress={this.save} style={commonStyles.button}>
+            <Text style={commonStyles.buttonText}>Salvar</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -76,24 +77,14 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     width: '90%',
-    height: Dimensions.get('window').width * 3/4,
+    height: Dimensions.get('window').width / 2,
     backgroundColor: '#eee',
     marginTop: 10
   },
   image: {
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').width * 3/4,
+    width: '100%',
+    height: Dimensions.get('window').width / 2,
     resizeMode: 'center',
-  },
-  button: {
-    marginTop: 30,
-    padding: 10,
-    backgroundColor: '#4286f4',
-    borderRadius: 5,
-  },
-  buttonText: {
-    fontSize: 20,
-    color: '#fff'
   },
   input: {
     width: '90%',
