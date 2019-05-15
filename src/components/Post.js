@@ -23,7 +23,7 @@ export default class componentName extends Component {
         <Image source={this.props.image} style={styles.image} />
         <Author email={this.props.email} nickname={this.props.nickname} />
         <Comments comments={this.props.comments} />
-        <AddComponent />
+        <AddComponent postId={this.props.id} />
       </View>
     );
   }
