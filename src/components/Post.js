@@ -9,21 +9,17 @@ import {
 import Author from './Author';
 import Comments from './Comments';
 import AddComponent from './AddComment';
+import { connect } from 'react-redux';
 
-export default class componentName extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-    };
-  }
-
+class Post extends Component {
   render() {
+    const addComment = this.props.name ? <AddComponent postId={this.props.id} /> : null;
     return (
       <View style={styles.container}>
-        <Image source={this.props.image} style={styles.image} />
+        <Image source={{ uri: this.props.image }} style={styles.image} />
         <Author email={this.props.email} nickname={this.props.nickname} />
         <Comments comments={this.props.comments} />
-        <AddComponent postId={this.props.id} />
+        {addComment}
       </View>
     );
   }
@@ -39,3 +35,11 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   }
 })
+
+const mapStateToProps = ({ user }) => {
+  return {
+    name: user.name
+  }
+}
+
+export default connect(mapStateToProps)(Post);

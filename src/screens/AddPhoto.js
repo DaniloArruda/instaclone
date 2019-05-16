@@ -16,16 +16,32 @@ import commonStyles from '../commonStyles';
 import { addPost } from '../store/actions/posts';
 import { connect } from 'react-redux';
 
+const noUser = 'Você precisa estar logado para adicionar imagens';
+
+const initialState = {
+  image: null,
+  comment: '',
+};
+
 class AddPhoto extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      image: null,
-      comment: '',
-    };
+    this.state = initialState;
+  }
+
+  componentDidUpdate = prevProps => {
+    if (prevProps.loading && !this.props.loading) {
+      this.setState(initialState);
+      this.props.navigation.navigate('Feed');
+    }
   }
 
   pickImage = () => {
+    if (!this.props.name) {
+      Alert.alert('Falha!', noUser);
+      return;
+    }
+
     ImagePicker.showImagePicker({
       title: 'Escolha a imagem',
       maxHeight: 600,
@@ -38,6 +54,11 @@ class AddPhoto extends Component {
   }
 
   save = async () => {
+    if (!this.props.name) {
+      Alert.alert('Falha!', noUser);
+      return;
+    }
+
     this.props.onAddPost({
       id: Math.random(),
       nickname: this.props.name,
@@ -47,9 +68,6 @@ class AddPhoto extends Component {
         comment: this.state.comment
       }]
     });
-
-    this.setState({ image: null, comment: '' });
-    this.props.navigation.navigate('Feed');
   }
 
   render() {
@@ -66,9 +84,12 @@ class AddPhoto extends Component {
           </TouchableOpacity>
           <TextInput placeholder='Algum comentário para a foto?'
             style={styles.input} value={this.state.comment}
-            onChangeText={comment => this.setState({ comment })} />
+            onChangeText={comment => this.setState({ comment })} 
+            editable={this.props.name !== null} />
 
-          <TouchableOpacity onPress={this.save} style={commonStyles.button}>
+          <TouchableOpacity onPress={this.save} 
+            style={[commonStyles.button, this.props.loading ? styles.buttonDisabled : null]}
+            disabled={this.props.loading}>
             <Text style={commonStyles.buttonText}>Salvar</Text>
           </TouchableOpacity>
         </View>
@@ -101,13 +122,17 @@ const styles = StyleSheet.create({
   input: {
     width: '90%',
     marginTop: 20,
+  },
+  buttonDisabled: {
+    backgroundColor: '#aaa'
   }
 })
 
-const mapStateToProps = ({ user }) => {
+const mapStateToProps = ({ user, posts }) => {
   return {
     email: user.email,
-    name: user.name
+    name: user.name,
+    loading: posts.isUploading
   }
 }
 

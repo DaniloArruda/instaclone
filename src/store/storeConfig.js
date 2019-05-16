@@ -1,6 +1,7 @@
-import { combineReducers, createStore } from 'redux'
+import { combineReducers, createStore, compose, applyMiddleware } from 'redux'
 import userReducer from './reducers/userReducer';
 import postsReducer from './reducers/postsReducer';
+import thunk from 'redux-thunk';
 
 const reducers = combineReducers({
   user: userReducer,
@@ -8,7 +9,7 @@ const reducers = combineReducers({
 })
 
 const storeConfig = () => {
-  return createStore(reducers);
+  return createStore(reducers, compose(applyMiddleware(thunk)));
 }
 
 export default storeConfig;
