@@ -88,7 +88,7 @@ class AddPhoto extends Component {
             editable={this.props.name !== null} />
 
           <TouchableOpacity onPress={this.save} 
-            style={[commonStyles.button, this.props.loading ? styles.buttonDisabled : null]}
+            style={[commonStyles.button, this.props.loading ? commonStyles.buttonDisabled : null]}
             disabled={this.props.loading}>
             <Text style={commonStyles.buttonText}>Salvar</Text>
           </TouchableOpacity>
@@ -122,9 +122,6 @@ const styles = StyleSheet.create({
   input: {
     width: '90%',
     marginTop: 20,
-  },
-  buttonDisabled: {
-    backgroundColor: '#aaa'
   }
 })
 

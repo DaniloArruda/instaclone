@@ -8,8 +8,10 @@ import {
 } from 'react-native';
 import commonStyles from '../commonStyles';
 import MyTextInput from '../components/MyTextInput';
+import { createUser } from '../store/actions/user';
+import { connect } from 'react-redux';
 
-export default class Register extends Component {
+class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -35,7 +37,9 @@ export default class Register extends Component {
           secureTextEntry={true} value={this.state.password}
           onChangeText={password => this.setState({ password })} />
 
-        <TouchableOpacity onPress={() => {}} style={commonStyles.button}>
+        <TouchableOpacity 
+          onPress={() => { this.props.onCreateUser(this.state) }} 
+          style={commonStyles.button}>
           <Text style={commonStyles.buttonText}>Salvar</Text>
         </TouchableOpacity>
       </View>
@@ -50,3 +54,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   }
 })
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onCreateUser: user => dispatch(createUser(user))
+  }
+}
+
+export default connect(null, mapDispatchToProps)(Register);

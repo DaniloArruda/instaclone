@@ -23,13 +23,18 @@ class Login extends Component {
     };
   }
 
+  componentDidUpdate = prevProps => {
+    if (prevProps.isLoading && !this.props.isLoading) {
+      this.props.navigation.navigate('Profile');
+    }
+  }
+
   login = () => {
     this.props.onLogin({
       name: this.state.name,
       email: this.state.email,
       password: this.state.password
     })
-    this.props.navigation.navigate('Profile');
   }
 
   render() {
@@ -43,7 +48,9 @@ class Login extends Component {
           secureTextEntry={true} value={this.state.password}
           onChangeText={password => this.setState({ password })} />
 
-        <TouchableOpacity onPress={this.login} style={commonStyles.button}>
+        <TouchableOpacity 
+          onPress={this.login} 
+          style={[commonStyles.button, this.props.isLoading ? commonStyles.buttonDisabled : null]}>
           <Text style={commonStyles.buttonText}>Login</Text>
         </TouchableOpacity>
 
@@ -64,10 +71,16 @@ const styles = StyleSheet.create({
   
 })
 
+const mapStateToProps = ({ user }) => {
+  return {
+    isLoading: user.isLoading
+  }
+}
+
 const mapDispatchToProps = dispatch => {
   return {
     onLogin: user => dispatch(login(user))
   }
 }
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

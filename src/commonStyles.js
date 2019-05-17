@@ -13,6 +13,9 @@ export default StyleSheet.create({
     fontSize: 20,
     color: '#fff',
   },
+  buttonDisabled: {
+    backgroundColor: '#aaa'
+  },
   input: {
     marginTop: 20,
     width: '90%',
