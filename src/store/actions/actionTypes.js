@@ -6,3 +6,4 @@ export const POST_CREATED = 'POST_CREATED';
 export const ADD_COMMENT = 'ADD_COMMENT';
 export const LOADING_USER = 'LOADING_USER';
 export const USER_LOADED = 'USER_LOADED';
+export const SET_MESSAGE = 'SET_MESSAGE';

@@ -1,5 +1,6 @@
 import { ADD_COMMENT, SET_POSTS, CREATING_POST, POST_CREATED } from "./actionTypes";
 import axios from "axios";
+import { setMessage } from "./message";
 
 export const addPost = post => {
   return dispatch => {
