@@ -15,7 +15,7 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: 'Temporario',
+      name: null,
       email: '',
       password: '',
       emailSelected: {},
@@ -24,7 +24,7 @@ class Login extends Component {
   }
 
   componentDidUpdate = prevProps => {
-    if (prevProps.isLoading && !this.props.isLoading) {
+    if (prevProps.isLoading && !this.props.isLoading && this.props.name !== null) {
       this.props.navigation.navigate('Profile');
     }
   }

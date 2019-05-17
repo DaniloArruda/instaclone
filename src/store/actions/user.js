@@ -1,5 +1,6 @@
 import { USER_LOGGED_IN, USER_LOGGED_OUT, LOADING_USER, USER_LOADED } from "./actionTypes";
 import axios from "axios";
+import { setMessage } from "./message";
 
 const authBaseURL = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty';
 const API_KEY = 'AIzaSyDK2oheXw6VCQKmkXWebeZIg3jdCWTyP9w';
@@ -57,7 +58,12 @@ export const login = user => {
       password: user.password,
       returnSecureToken: true
     })
-      .catch(err => console.log(err))
+      .catch(err => {
+        dispatch(setMessage({
+          text: 'Erro ao fazer login'
+        }));
+        dispatch(userLoaded());
+      })
       .then(res => {
         if (res.data.localId) {
           axios.get(`/users/${res.data.localId}.json`)
