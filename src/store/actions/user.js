@@ -20,21 +20,30 @@ export const logout = () => {
 
 export const createUser = user => {
   return dispatch => {
+    dispatch(loadingUser());
     axios.post(`${authBaseURL}/signupNewUser?key=${API_KEY}`, {
       email: user.email,
       password: user.password,
       returnSecureToken: true
     })
-      .catch(err => console.log(err))
       .then(res => {
         if (res.data.localId) {
           axios.put(`/users/${res.data.localId}.json`, {
             name: user.name
           })
-            .catch(err => console.log(err))
-            .then(res => console.log('Usuário cadastrado com sucesso'));
+            .then(res => {
+              dispatch(login(user));
+            })
+            .catch(err => {
+              dispatch(setMessage({ text: 'Erro ao salvar dados do usuário' }));
+              dispatch(userLoaded());
+            });
         }
       })
+      .catch(err => {
+        dispatch(setMessage({ text: 'Erro ao cadastrar usuário' }));
+        dispatch(userLoaded());
+      });
   }
 }
 
@@ -58,23 +67,26 @@ export const login = user => {
       password: user.password,
       returnSecureToken: true
     })
-      .catch(err => {
-        dispatch(setMessage({
-          text: 'Erro ao fazer login'
-        }));
-        dispatch(userLoaded());
-      })
       .then(res => {
         if (res.data.localId) {
+          user.token = res.data.idToken;
           axios.get(`/users/${res.data.localId}.json`)
-            .catch(err => console.log(err))
             .then(res => {
-              user.password = null;
+              delete user.password;
               user.name = res.data.name;
               dispatch(userLogged(user));
               dispatch(userLoaded());
             })
+            .catch(err => {
+              dispatch(setMessage({ text: 'Erro ao recuperar dados do usuário' }));
+              dispatch(userLoaded());
+            })
         }
       })
+      .catch(err => {
+        dispatch(setMessage({ text: 'Erro ao fazer login' }));
+        dispatch(userLoaded());
+      });
+      
   }
 }

@@ -11,17 +11,23 @@ import MyTextInput from '../components/MyTextInput';
 import { createUser } from '../store/actions/user';
 import { connect } from 'react-redux';
 
+const initialState = {
+  name: '',
+  email: '',
+  password: '',
+};
+
 class Register extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      name: '',
-      email: '',
-      password: '',
-      nameSelected: {},
-      emailSelected: {},
-      passwordSelected: {},
-    };
+    this.state = { ...initialState };
+  }
+
+  componentDidUpdate = prevProps => {
+    if (prevProps.loading && !this.props.loading) {
+      this.setState({ ...initialState });
+      this.props.navigation.navigate('Profile');
+    }
   }
 
   render() {
@@ -39,7 +45,7 @@ class Register extends Component {
 
         <TouchableOpacity 
           onPress={() => { this.props.onCreateUser(this.state) }} 
-          style={commonStyles.button}>
+          style={[commonStyles.button, this.props.loading ? commonStyles.buttonDisabled : null]}>
           <Text style={commonStyles.buttonText}>Salvar</Text>
         </TouchableOpacity>
       </View>
@@ -55,10 +61,16 @@ const styles = StyleSheet.create({
   }
 })
 
+const mapStateToProps = ({ user }) => {
+  return {
+    loading: user.isLoading
+  }
+}
+
 const mapDispatchToProps = dispatch => {
   return {
     onCreateUser: user => dispatch(createUser(user))
   }
 }
 
-export default connect(null, mapDispatchToProps)(Register);
+export default connect(mapStateToProps, mapDispatchToProps)(Register);

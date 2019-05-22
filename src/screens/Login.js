@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { 
   View, 
   Text,
-  TextInput,
   TouchableOpacity,
-  StyleSheet
+  StyleSheet,
+  Alert
 } from 'react-native';
 import commonStyles from '../commonStyles';
 import MyTextInput from '../components/MyTextInput';
@@ -24,7 +24,7 @@ class Login extends Component {
   }
 
   componentDidUpdate = prevProps => {
-    if (prevProps.isLoading && !this.props.isLoading && this.props.name !== null) {
+    if (prevProps.isLoading && !this.props.isLoading) {
       this.props.navigation.navigate('Profile');
     }
   }
