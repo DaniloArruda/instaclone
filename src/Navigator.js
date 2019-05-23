@@ -12,6 +12,7 @@ import AddPhoto from './screens/AddPhoto';
 import Profile from './screens/Profile';
 import Login from './screens/Login';
 import Register from './screens/Register';
+import Splash from './screens/Splash';
 
 const authRouter = createStackNavigator(
   {
@@ -74,8 +75,16 @@ const MenuConfig = {
 }
 
 const MenuNavigator = createBottomTabNavigator(MenuRoutes, MenuConfig);
-const AppContainer = createAppContainer(MenuNavigator);
 
+const SplashNavigator = createSwitchNavigator(
+  {
+    Splash: Splash,
+    App: MenuNavigator
+  },
+  {
+    initialRouteName: 'Splash'
+  }
+)
 
-
+const AppContainer = createAppContainer(SplashNavigator);
 export default AppContainer;
